@@ -1,7 +1,7 @@
 module.exports = function multiply(first, second) {
   let numberOneLength = first.length;
   let numberTwoLength = second.length;
-  let One, Two, Multi,Ostatok,Razriad, RazriadNumber=0, Counter=1,Promejutok=0;
+  let One, Two, Multi,Ostatok,RazriadNumber=0, Counter=0,RowLength=0,f=0,k,s;
 
   if (numberOneLength > numberTwoLength) {
     var numberOne=first.split('');
@@ -11,78 +11,60 @@ module.exports = function multiply(first, second) {
     var numberTwo=first.split('');
     numberOneLength = second.length;
     numberTwoLength = first.length;
-
-//    console.log(numberOne);
-//    console.log(numberTwo);
   }
-//  console.log(Promejutok);
+
   var numberFinal=[];
 
   let i=(numberOneLength-1);
   let j=(numberTwoLength-1);
 
-  //One=Number(numberOne[i]);
-//  Two=Number(numberTwo[j]);
-
-  do {
-// console.log('Второе число' + Two);
- Two=Number(numberTwo[j]);
+ do {
+ s=0;
  One=Number(numberOne[i]);
- if (Two != 0) {
+ Two=Number(numberTwo[j]);
+ numberFinal[f]=[];
+ for (k=0;k<Counter;k++) {
+ numberFinal[f][k]=0;}
+
      do  {
-
      Multi=One*Two+RazriadNumber;
-  //   console.log('Умножение + Разряд:' + One + '*' + Two + '=' + Multi + '\(' + RazriadNumber + '\)');
-              Ostatok=Multi%10;
-              RazriadNumber=Math.floor(Multi/10);
-              Ostatok=Ostatok.toString();
-      //        console.log('остаток' + Ostatok);
-      //        console.log('Переносится разряд' + RazriadNumber);
-              numberFinal.splice(0,0,Ostatok);
-            //console.log(numberFinal);
-
-  			      if (i==0 && RazriadNumber>0) {
-                Razriad=RazriadNumber.toString();
-                numberFinal.splice(0,0,Razriad);
-      //          console.log(numberFinal);
-      				} else {
-                One=Number(numberOne[i-1]);
-      //          console.log(numberFinal);
-  				}
-
+     Ostatok=Multi%10;
+     RazriadNumber=Math.floor(Multi/10);
+     numberFinal[f][s+f]=Number(Ostatok);
+     numberFinal[f][s+1+f]=Number(RazriadNumber);
+     One=Number(numberOne[i-1]);
     i--;
+    s++;
   } while (i>=0)
-} else {
-  numberFinal.push('0');
-}
-//  console.log('\n\nСледующая итерация');
+  s=0;
+  RowLength=numberFinal[f].length;
+  f++;
   i=(numberOneLength-1);
-//console.log(numberFinal);
-
-  Promejutok=Promejutok+numberFinal.join('')*Counter;
-  console.log('Промежуток inside: ' + Promejutok);
-
-  Counter*=10;
   RazriadNumber=0;
-  numberFinal=[];
+  Counter+=1;
   j--;
 } while (j>=0)
 
-console.log('Промежуток out: ' + Promejutok);
-console.log(Promejutok.toString());
-
-
-//перевод большого числа в строку
 var FinalStroke=[];
-while (Promejutok>0) {
-FinalStroke.splice(0,0,Promejutok%10);
-Promejutok=Math.floor(Promejutok/10);
+RazriadNumber=0;
 
+for (i=0;i<=RowLength;i++) {
+  Multi=0;
+  FinalStroke[i]=0;
+
+  for (j=0;j<numberTwoLength;j++) {
+    if (typeof numberFinal[j][i] == 'undefined') {numberFinal[j][i]=0;}
+    Multi=Multi+Number(numberFinal[j][i]);
+  }
+  Multi+=RazriadNumber;
+  Ostatok=Multi%10;
+  FinalStroke[i]=Number(Ostatok);
+  RazriadNumber=Math.floor(Multi/10);
 }
-FinalStroke=FinalStroke.join('');
-console.log('End  ' + FinalStroke);
-//окончание перевода
-console.log('End  ' + FinalStroke);
+
+FinalStroke.reverse();
+for (i=0;i<=2;i++) {if (FinalStroke[0]==0) FinalStroke.shift();}
+FinalStroke=FinalStroke.join('')
 
 return(FinalStroke);
 }
